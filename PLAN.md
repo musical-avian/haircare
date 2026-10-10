@@ -28,6 +28,7 @@ Shared state for all sessions/agents. Protocol in `CLAUDE.md`. Append; don't rew
 - [ ] Owner: set default branch = main (currently the claude/ branch)
 ### Doing
 ### Done
+- [x] (claude, 2026-10-10) Camera released when tab is hidden / page left / after scan (stream tracks were never stopped; not the OCR worker)
 - [x] (claude, 2026-10-10) Merged PR #1; live check (`e2e/check.cjs`, `live-check.yml`) runs the app against real OBF + links on GitHub Actions
 - [x] (claude, 2026-10-10) EU notes on rules (`eu` field) + EU/Germany section in RESEARCH.md
 - [x] (claude, 2026-10-10) Alternatives tab: OBF search via `Matcher.rank`, curated `alternatives.json` + tests
@@ -63,3 +64,4 @@ Shared state for all sessions/agents. Protocol in `CLAUDE.md`. Append; don't rew
 - 2026-10-10 claude: v2: EU notes, Alternatives tab, Toolkit tab, community + treatment evidence in RESEARCH.md; 8 tests + browser check pass.
 - 2026-10-10 claude: merged PR #1. Pages deploy failed: Pages not enabled (owner setting). Live check added; fixed entity decoding, duplicated brands, empty-conditioner tip; moved e2e scripts out of test/.
 - 2026-10-10 claude: 2nd live run: links OK in browser, Pages 200. Fixed scanner/alternatives load coupling, check races; removed pages.yml (conflicts with branch deploy).
+- 2026-10-10 claude: stop camera tracks on visibilitychange/pagehide/snap; SW v5

@@ -51,10 +51,23 @@ $('camera').onclick = async () => {
   }
 };
 
+// Release the camera: Chrome keeps it on (even in a background tab) until every track is stopped.
+function stopCamera() {
+  video.srcObject?.getTracks().forEach((t) => t.stop());
+  video.srcObject = null;
+  video.style.display = 'none';
+  $('camera').hidden = false;
+  $('snap').hidden = true;
+}
+document.addEventListener('visibilitychange', () => document.hidden && stopCamera());
+addEventListener('pagehide', stopCamera);
+
 $('snap').onclick = () => {
   canvas.width = video.videoWidth;
   canvas.height = video.videoHeight;
   canvas.getContext('2d').drawImage(video, 0, 0);
+  stopCamera();
+  canvas.style.display = 'block';
   read();
 };
 
@@ -67,7 +80,7 @@ $('file').onchange = async () => {
   canvas.height = img.height * scale;
   canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
   canvas.style.display = 'block';
-  video.style.display = 'none';
+  stopCamera();
   read();
 };
 
