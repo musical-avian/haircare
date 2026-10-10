@@ -23,14 +23,17 @@ Shared state for all sessions/agents. Protocol in `CLAUDE.md`. Append; don't rew
 
 ## Task board
 ### Todo
-- [ ] EU notes on rules (`eu` field) + EU/Germany section in RESEARCH.md
-- [ ] Alternatives tab: OBF search filtered by `Matcher.scan`, curated `alternatives.json` + test
-- [ ] Toolkit tab (clear → maintain → barrier repair → see a doctor), with sources
-- [ ] Community resources (Reddit, SSS, Sezia, Folliculitis Scout, INCIDecoder, CodeCheck, haut.de)
-- [ ] Playwright e2e for tabs + mocked OBF
+- [ ] Verify partial INCI lists (Terzolin, Vichy Dercos) against the pack / Beipackzettel; drop `partial`
+- [ ] Find a red-free conditioner sold in Germany for `alternatives.json`
+- [ ] Commit the Playwright e2e script into `test/` (currently kept in a scratchpad)
+- [ ] Owner: set Pages Source = GitHub Actions, default branch = main, merge PR #1
 ### Doing
-- [ ] (claude, 2026-10-10) GitHub Pages workflow + CLAUDE.md + PLAN.md → PR to `main`
 ### Done
+- [x] (claude, 2026-10-10) EU notes on rules (`eu` field) + EU/Germany section in RESEARCH.md
+- [x] (claude, 2026-10-10) Alternatives tab: OBF search via `Matcher.rank`, curated `alternatives.json` + tests
+- [x] (claude, 2026-10-10) Toolkit tab (clear → stop feeding → barrier → maintain → doctor)
+- [x] (claude, 2026-10-10) Community resources section in RESEARCH.md
+- [x] (claude, 2026-10-10) GitHub Pages workflow + CLAUDE.md + PLAN.md → PR #1 to `main`
 - [x] (claude, 2026-10-10) v1: scanner, OCR, matcher, rules, research write-up, offline SW
 
 ## Findings
@@ -39,12 +42,19 @@ Shared state for all sessions/agents. Protocol in `CLAUDE.md`. Append; don't rew
 - `published` Lab media use Tweens / glyceryl esters as lipid source — doi:10.1128/jcm.25.10.2017-2019.1987
 - `published` MF review & treatments — doi:10.1111/jdv.16253
 - `regulatory` ZPT banned in EU cosmetics from 2022-03-01 (CMR 1B, Reg. (EU) 2021/1902)
-- `infra` openbeautyfacts.org is blocked from the dev sandbox proxy → mock it in tests
+- `published` Ketoconazole 2% ≈ steroids for SD clearance with 44% fewer side effects; ≈ ciclopirox — doi:10.1002/14651858.CD008138.pub3
+- `published` Mild steroids ≈ strong steroids for SD; calcineurin inhibitors comparable — doi:10.1002/14651858.CD009446.pub2
+- `regulatory` Climbazole ≤2% in rinse-off anti-dandruff shampoo (Reg. (EU) 2019/698); Terzolin 2% is sold only in pharmacies, no prescription needed
+- `market` Most EU anti-dandruff shampoos contain one red ingredient (glycol distearate, glyceryl oleate, PEG-40 HCO); sebamed Anti-Schuppen Plus has none
+- `community` r/SebDerm: contact time 3–5+ min is the #1 tip; rotating actives is common
+- `infra` openbeautyfacts.org, dm.de and INCI sites are blocked from the dev sandbox (org network policy) → mock OBF in tests; gather INCI via WebSearch
 
 ## Open questions
-- OTC vs prescription status in Germany for ketoconazole / ciclopirox shampoos (verify).
+- Ciclopirox shampoo availability/status in Germany (ketoconazole answered: sold only in pharmacies, no prescription needed).
 - Should "debated" (amber) be configurable per user (strict / relaxed mode)?
 
 ## Log
 - 2026-10-10 claude: v1 pushed to `claude/malassezia-ingredient-detector-toldfa`.
 - 2026-10-10 claude: v2 planned (Pages, EU, alternatives, toolkit, community, blackboard).
+- 2026-10-10 claude: Pages workflow, CLAUDE.md, PLAN.md committed; created `main` from the v1 commit; opened PR #1.
+- 2026-10-10 claude: v2: EU notes, Alternatives tab, Toolkit tab, community + treatment evidence in RESEARCH.md; 8 tests + browser check pass.

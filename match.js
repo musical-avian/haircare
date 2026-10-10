@@ -8,7 +8,7 @@
   function normalise(raw) {
     let t = raw.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
     t = t.replace(/-\s*\n\s*(?=\d)/g, '-').replace(/-\s*\n\s*/g, '');
-    t = t.replace(/[|•·;*]/g, ',').replace(/\.(\s|$)/g, ',$1').replace(/\s+/g, ' ');
+    t = t.replace(/(\d),(\d)/g, '$1-$2').replace(/[|•·;*]/g, ',').replace(/\.(\s|$)/g, ',$1').replace(/\s+/g, ' ');
     const i = t.search(/ingr[ea]dients?\s*[:/]/);
     return i >= 0 ? t.slice(t.indexOf(':', i) + 1 || i) : t;
   }
@@ -63,13 +63,25 @@
         if (seenItems.has(is) && !long) continue;
         claimed.push([s, e]);
         seenItems.add(is);
-        hits.push({ level: rule.level, name: rule.name, why: rule.why, item: (long ? m[0] : text.slice(is, ie)).trim(), pos: s });
+        hits.push({ level: rule.level, name: rule.name, why: rule.why, eu: rule.eu, item: (long ? m[0] : text.slice(is, ie)).trim(), pos: s });
       }
     }
     return hits.sort((a, b) => LEVEL_ORDER[a.level] - LEVEL_ORDER[b.level] || a.pos - b.pos);
   }
 
-  const api = { normalise, fixTypos, makeVocab, scan };
+  // Open Beauty Facts products → only those without red hits, fewest amber first.
+  function rank(products, rules, vocab) {
+    vocab = vocab || makeVocab(rules);
+    return products
+      .map((p) => ({ ...p, inci: p.ingredients_text || p.ingredients_text_de || p.ingredients_text_en || '' }))
+      .filter((p) => p.inci.trim())
+      .map((p) => ({ ...p, hits: scan(p.inci, rules, vocab) }))
+      .filter((p) => !p.hits.some((h) => h.level === 'red'))
+      .map((p) => ({ ...p, amber: p.hits.filter((h) => h.level === 'amber').length, antifungal: p.hits.some((h) => h.level === 'blue') }))
+      .sort((a, b) => b.antifungal - a.antifungal || a.amber - b.amber);
+  }
+
+  const api = { normalise, fixTypos, makeVocab, scan, rank };
   if (typeof module !== 'undefined') module.exports = api;
   else root.Matcher = api;
 })(this);

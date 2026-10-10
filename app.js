@@ -4,11 +4,33 @@ const video = $('video'), canvas = $('canvas'), text = $('text'), status = $('st
 const abs = (p) => new URL(p, location.href).href;
 let rules = [], vocab, worker;
 
-fetch('ingredients.json').then((r) => r.json()).then((d) => {
+Promise.all([fetch('ingredients.json'), fetch('alternatives.json')].map((p) => p.then((r) => r.json()))).then(([d, alts]) => {
   rules = d.rules;
   vocab = Matcher.makeVocab(rules);
   if (text.value.trim()) check();
+  for (const p of alts.products) {
+    const hits = Matcher.scan(p.inci, rules, vocab);
+    const worst = hits[0] ? hits[0].level : 'green';
+    const flags = hits.filter((h) => h.level === 'red' || h.level === 'amber').map((h) => h.item).join(', ');
+    const el = card(p.medicine && worst === 'red' ? 'blue' : worst, p.name,
+      `${p.where} · ${p.note}${flags ? ' Flags: ' + flags + '.' : ''}${p.partial ? ' (Partial ingredient list.)' : ''} Checked ${p.checked}.`, p.source);
+    el.onclick = (e) => e.target.tagName !== 'A' && load(p.inci);
+    $('alt-curated').append(el);
+  }
 });
+
+// Tabs
+document.querySelectorAll('nav button').forEach((b) => (b.onclick = () => tab(b.dataset.tab)));
+function tab(name) {
+  document.querySelectorAll('nav button').forEach((b) => b.classList.toggle('on', b.dataset.tab === name));
+  document.querySelectorAll('main > section').forEach((s) => (s.hidden = s.id !== name));
+  scrollTo(0, 0);
+}
+function load(inci) {
+  text.value = inci;
+  tab('scan');
+  check();
+}
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
 
 $('camera').onclick = async () => {
@@ -114,14 +136,60 @@ function check() {
   else (v.textContent = '✓ No known Malassezia triggers found'), (v.style.color = 'var(--green)');
   $('results').innerHTML = '';
   for (const h of hits) {
-    const el = document.createElement('div');
-    el.className = 'hit ' + h.level;
-    el.innerHTML = '<b></b><small></small>';
-    el.firstChild.textContent = h.item;
-    el.lastChild.textContent = `${h.name} — ${h.why}`;
+    const el = card(h.level, h.item, `${h.name} — ${h.why}`);
+    if (h.eu) el.insertAdjacentHTML('beforeend', '<span class="eu"></span>'), (el.lastChild.textContent = '🇪🇺 ' + h.eu);
     $('results').append(el);
   }
+  if (n('red')) {
+    const b = document.createElement('button');
+    b.className = 'alt';
+    b.textContent = 'Find alternatives sold in Germany →';
+    b.onclick = () => tab('alts');
+    $('results').append(b);
+  }
 }
+
+// One result card; text is set via textContent so product data can't inject HTML.
+function card(level, title, sub, link) {
+  const el = document.createElement('div');
+  el.className = 'hit ' + level + (link ? ' prod' : '');
+  el.innerHTML = '<b></b><small></small>';
+  el.firstChild.textContent = title;
+  el.lastChild.textContent = sub;
+  if (link) {
+    const a = Object.assign(document.createElement('a'), { href: link, target: '_blank', rel: 'noopener', textContent: ' source ↗' });
+    el.lastChild.append(a);
+  }
+  return el;
+}
+
+// Alternatives: Open Beauty Facts products sold in Germany, minus anything with a red hit.
+$('alt-go').onclick = async () => {
+  const out = $('alt-results'), st = $('alt-status'), type = $('alt-type').value;
+  out.innerHTML = '';
+  st.textContent = 'Searching Open Beauty Facts…';
+  const q = new URLSearchParams({
+    action: 'process', json: '1', page_size: '200', search_terms: $('alt-q').value.trim(),
+    tagtype_0: 'countries', tag_contains_0: 'contains', tag_0: 'germany',
+    fields: 'code,product_name,brands,ingredients_text,ingredients_text_de,ingredients_text_en',
+  });
+  if (type) q.append('tagtype_1', 'categories'), q.append('tag_contains_1', 'contains'), q.append('tag_1', type);
+  try {
+    const r = await fetch('https://world.openbeautyfacts.org/cgi/search.pl?' + q);
+    const all = (await r.json()).products || [];
+    const good = Matcher.rank(all, rules, vocab);
+    st.textContent = `${all.length} products found, ${good.length} without red-flag ingredients.`;
+    for (const p of good.slice(0, 50)) {
+      const el = card(p.antifungal ? 'blue' : p.amber ? 'amber' : 'green', `${p.brands || ''} ${p.product_name || p.code}`.trim(),
+        `${p.antifungal ? 'Contains an antifungal. ' : ''}${p.amber} debated ingredient${p.amber === 1 ? '' : 's'}. Tap for details.`,
+        'https://world.openbeautyfacts.org/product/' + p.code);
+      el.onclick = (e) => e.target.tagName !== 'A' && load(p.inci);
+      out.append(el);
+    }
+  } catch {
+    st.textContent = 'Search needs an internet connection; the hand-checked picks below work offline.';
+  }
+};
 
 function say(msg) {
   status.textContent = msg;

@@ -5,6 +5,10 @@ feed *Malassezia* (seborrheic dermatitis / dandruff / Malassezia folliculitis).
 Why each ingredient is flagged: see [RESEARCH.md](RESEARCH.md).
 
 - 🔴 feeds Malassezia · 🟠 debated · 🔵 helpful antifungal · 🟢 generally safe
+- Three tabs: **Scan** (check a label), **Alternatives** (red-free products sold in Germany: a live
+  Open Beauty Facts search plus hand-checked picks from dm, Rossmann and pharmacies), and **Toolkit** (a short routine to clear
+  seb derm and rebuild the skin barrier, with sources).
+- EU-aware: e.g. flags that zinc pyrithione is banned in EU cosmetics and names the EU alternatives.
 - Works **offline** once loaded, installs to the Android home screen (PWA), no account, no tracking.
 
 ## How it reads the label
@@ -19,7 +23,9 @@ Why each ingredient is flagged: see [RESEARCH.md](RESEARCH.md).
 |---|---|
 | `ingredients.json` | **The rules.** Ordered list of regex patterns with level + reason. Edit this to change what's flagged. |
 | `match.js` | Matching logic (normalise, OCR typo correction, scan). No dependencies. |
-| `app.js`, `index.html` | UI: camera, OCR, results. |
+| `app.js`, `index.html` | UI: camera, OCR, results, tabs, alternatives search, toolkit. |
+| `alternatives.json` | Hand-checked products available in Germany (INCI, source, date checked). |
+| `CLAUDE.md`, `PLAN.md` | Conventions, and the shared blackboard for AI/human contributors. |
 | `sw.js`, `manifest.json`, `icon*` | Offline cache + installable app. |
 | `vendor/` | Pinned copies of Tesseract.js 6.0.1, tesseract.js-core 6.0.0 and English LSTM data (Apache-2.0). Kept in the repo so the app keeps working if a CDN or the project disappears. |
 | `test/` | `node --test` |

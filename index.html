@@ -29,16 +29,27 @@
   #verdict { font-size:1.15rem; font-weight:700; margin:14px 0 6px }
   .hit { background:var(--card); border:1px solid var(--line); border-left:6px solid; border-radius:8px;
           padding:8px 10px; margin:6px 0 }
-  .hit b { text-transform:capitalize } .hit small { color:var(--muted); display:block }
+  .hit:not(.prod) b { text-transform:capitalize } .hit small { color:var(--muted); display:block }
   .red { border-left-color:var(--red) } .amber { border-left-color:var(--amber) }
   .blue { border-left-color:var(--blue) } .green { border-left-color:var(--green) }
   footer { color:var(--muted); font-size:.8rem; margin-top:24px }
   a { color:var(--accent) }
+  nav { display:flex; gap:4px; margin:0 0 12px; border-bottom:1px solid var(--line) }
+  nav button { flex:1; background:none; color:var(--muted); border-radius:0; border-bottom:3px solid transparent; padding:10px 4px }
+  nav button.on { color:var(--fg); border-bottom-color:var(--accent) }
+  select, input[type=search] { flex:1; padding:11px; border-radius:10px; border:1px solid var(--line); background:var(--card); color:var(--fg); font:inherit; min-width:0 }
+  .hit .eu { color:var(--blue); display:block; font-size:.85rem; margin-top:2px }
+  .prod { cursor:pointer } .prod small a { color:var(--accent) }
+  h2 { font-size:1.05rem; margin:20px 0 6px } h3 { font-size:.95rem; margin:14px 0 4px }
+  #toolkit p, #toolkit li { font-size:.95rem } #toolkit ul { padding-left:20px; margin:4px 0 }
+  .note { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 10px; font-size:.85rem; color:var(--muted) }
 </style>
 </head>
 <body>
 <main>
   <h1>Scalp Scan <small style="font-weight:400;color:var(--muted)">— Malassezia ingredient checker</small></h1>
+  <nav><button data-tab="scan" class="on">Scan</button><button data-tab="alts">Alternatives</button><button data-tab="toolkit">Toolkit</button></nav>
+  <section id="scan">
   <video id="video" playsinline muted></video>
   <canvas id="canvas"></canvas>
   <div class="row">
@@ -51,6 +62,62 @@
   <div class="row"><button id="check" class="alt">Check ingredients</button></div>
   <div id="verdict"></div>
   <div id="results"></div>
+  </section>
+
+  <section id="alts" hidden>
+    <p class="note">Products sold in Germany from <a href="https://world.openbeautyfacts.org">Open Beauty Facts</a> (needs internet), with anything that has a red ingredient filtered out. Coverage is patchy and formulas change, so check the pack. Tap a product to see the details on the Scan tab.</p>
+    <div class="row">
+      <select id="alt-type">
+        <option value="shampoos">Shampoo</option>
+        <option value="hair-conditioners">Conditioner</option>
+        <option value="shower-gels">Shower gel / body wash</option>
+        <option value="">Any type</option>
+      </select>
+      <input id="alt-q" type="search" placeholder="Brand or word (optional)">
+    </div>
+    <div class="row"><button id="alt-go">Search Germany</button></div>
+    <div id="alt-status"></div>
+    <div id="alt-results"></div>
+    <h2>Hand-checked picks (dm / Rossmann / Apotheke)</h2>
+    <div id="alt-curated"></div>
+  </section>
+
+  <section id="toolkit" hidden>
+    <p class="note">A minimal routine based on Cochrane reviews and dermatology guidance (sources in <a href="RESEARCH.md">RESEARCH.md</a>). This is not medical advice: see a doctor for a diagnosis, especially before your first treatment.</p>
+    <h2>1 · Clear it (2–4 weeks)</h2>
+    <ul>
+      <li><b>Ketoconazole 2%</b> (Terzolin® 2% Lösung, Apotheke, no prescription): 2×/week. Massage into the <i>scalp</i>, leave <b>3–5 min</b>, then rinse. Use it as a body wash on the hairline, ears, eyebrows, beard, chest and back too: the same yeast causes the folliculitis.</li>
+      <li>On the other days use a mild shampoo with no red flags, ideally with <b>piroctone olamine</b>, <b>climbazole</b> or <b>selenium disulfide</b> (EU actives; zinc pyrithione is banned in EU cosmetics).</li>
+      <li>Thick, adherent scale: a <b>salicylic acid</b> shampoo or lotion first, so the antifungal reaches the skin.</li>
+      <li>Wash often enough to stop sebum building up. For most people that means every 1–2 days during a flare.</li>
+    </ul>
+    <h2>2 · Stop feeding it</h2>
+    <ul>
+      <li>Scan every <b>leave-on</b> product first: conditioner, styling, oils, serums, beard balm, moisturiser. These matter more than rinse-off products.</li>
+      <li>Conditioner only on the lengths, never the scalp. Rinse face, neck and back <b>last</b>, after the conditioner.</li>
+      <li>No plant oils or butters on scalp or face (coconut, olive, argan, shea, castor).</li>
+      <li>Wash pillowcases, hats and towels often. Shower after sweating and wear breathable fabrics.</li>
+    </ul>
+    <h2>3 · Rebuild the barrier (Malassezia-safe)</h2>
+    <ul>
+      <li><b>Humectants:</b> glycerin, panthenol, hyaluronic acid, urea ≤5%, niacinamide.</li>
+      <li><b>Emollients:</b> squalane, MCT oil (caprylic/capric triglyceride), and petrolatum or mineral oil on very dry, non-hairy patches.</li>
+      <li>Fragrance-free products only, lukewarm water, and pat dry. Don't scratch or pick at scale.</li>
+      <li>Patch-test one new product at a time for 1–2 weeks.</li>
+    </ul>
+    <h2>4 · Keep it away</h2>
+    <ul>
+      <li>Ketoconazole every 1–2 weeks for 3–6 months, then as needed. Relapse is normal: SD is chronic, and maintenance treatment keeps it controlled.</li>
+      <li>Rotate between two different antifungal actives if one stops working.</li>
+    </ul>
+    <h2>5 · See a doctor (Hautarzt) if</h2>
+    <ul>
+      <li>There is no improvement after 4 weeks, it is spreading, you have hair loss, oozing or pain, or itchy bumps on your chest or back don't respond.</li>
+      <li>They may prescribe a short course of a mild topical steroid or a calcineurin inhibitor for flares, or an oral antifungal for folliculitis. These are prescription-only, so don't self-medicate.</li>
+    </ul>
+    <h2>Community</h2>
+    <p>r/SebDerm, r/FungalAcne, r/Folliculitis; Simple Skincare Science, Sezia, Folliculitis Scout (ingredient checkers); CodeCheck and INCIDecoder (ingredient lists); haut.de (ingredient explainers in German). Community tips are anecdotal. The most common one is that contact time matters: most people rinse the antifungal off far too soon.</p>
+  </section>
   <footer>
     <span style="color:var(--red)">■</span> feeds Malassezia ·
     <span style="color:var(--amber)">■</span> debated ·

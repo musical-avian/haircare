@@ -1,8 +1,8 @@
 // Cache-first service worker so the app works offline in the shop.
 // Bump VERSION whenever any cached file changes.
-const VERSION = 'v1';
+const VERSION = 'v2';
 const FILES = [
-  './', 'index.html', 'app.js', 'match.js', 'ingredients.json', 'manifest.json', 'icon.svg', 'icon-192.png', 'icon-512.png',
+  './', 'index.html', 'app.js', 'match.js', 'ingredients.json', 'alternatives.json', 'manifest.json', 'icon.svg', 'icon-192.png', 'icon-512.png',
   'vendor/tesseract.min.js', 'vendor/worker.min.js', 'vendor/lang/eng.traineddata.gz',
   'vendor/core/tesseract-core-lstm.wasm.js', 'vendor/core/tesseract-core-simd-lstm.wasm.js',
 ];

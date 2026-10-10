@@ -64,7 +64,7 @@ too short and are generally considered safe.
   (not food, but can be drying)
 
 ### 🔵 Helpful actives
-Ketoconazole, ciclopirox, zinc pyrithione, selenium sulfide, piroctone olamine, climbazole (antifungals);
+Ketoconazole, ciclopirox, zinc pyrithione (*banned in EU cosmetics since 2022, see §4*), selenium sulfide, piroctone olamine, climbazole (antifungals);
 salicylic acid, sulfur, coal tar (scale removal). Tea tree oil 5% reduced dandruff 41% vs 11% placebo
 (Satchell et al. 2002, [doi:10.1067/mjd.2002.122734](https://doi.org/10.1067/mjd.2002.122734)) but can sensitise.
 
@@ -93,10 +93,54 @@ far less of a concern than in a leave-in conditioner, oil or styling cream. Leav
 - **Practical takeaway:** choose leave-on products (conditioner, styling, oils, serums) without red-flag
   ingredients; rinse conditioner off the face/neck/back; keep an antifungal shampoo in rotation.
 
-## 4. Community resources (cross-check, not depended on)
-- Simple Skincare Science — "fungal acne" ingredient list and checker
-- Sezia.co — fungal-acne ingredient checker
-- Folliculitis Scout — ingredient checker
-- Open Beauty Facts — open product/ingredient database (used optionally for barcode lookup)
+## 4. EU / Germany specifics
 
-These lists disagree in places (fatty alcohols, ceteareths, ferments); this tool marks those as amber.
+| Active | EU status | In German shops |
+|---|---|---|
+| Zinc pyrithione | **Banned in cosmetics since 1 March 2022.** It is classified CMR 1B (toxic to reproduction) and was moved to Annex II by [Reg. (EU) 2021/1902](https://eur-lex.europa.eu/eli/reg/2021/1902/oj) ([CIRS summary](https://www.cirs-group.com/en/cosmetics/breaking-news-the-ban-on-the-cosmetic-anti-dandruff-agent-zinc-pyrithione-zpt-in-the-eu-has-come-into-force-on-march-1-2022)). | Gone. EU Head & Shoulders switched to piroctone olamine. |
+| Piroctone olamine | Allowed (Annex III/V) | The most common: Balea, sebamed, Isana, Head & Shoulders EU, Eucerin |
+| Climbazole | Allowed up to 2% in rinse-off anti-dandruff shampoos ([Reg. (EU) 2019/698](https://eur-lex.europa.eu/eli/reg/2019/698/oj/eng)) | Eucerin DermoCapillaire, some salon brands |
+| Selenium disulfide | Allowed in anti-dandruff shampoos (Annex III, max 1%) | Vichy Dercos Anti-Schuppen |
+| Ketoconazole | **Medicine**, not a cosmetic | **Terzolin® 2% Lösung** (STADA): sold only in pharmacies, no prescription needed. 2×/week for 2–4 weeks, leave on 3–5 min, then 1× every 1–2 weeks for 3–6 months ([product info](https://www.shop-apotheke.com/arzneimittel/14420349/terzolin-2-loesung-gegen-pilzbefall-und-schuppen.htm), [STADA brochure](https://www.stada.de/media/xg4p251w/terzolin_broschuere_2019_website.pdf)) |
+| Ciclopirox | Medicine | Pharmacy; ask a pharmacist or doctor |
+
+**Many EU anti-dandruff shampoos still contain a red-flag ingredient.** Examples: glycol distearate
+in Head & Shoulders EU and the plain sebamed Anti-Schuppen, glyceryl oleate in Balea med ultra sensitive,
+and PEG-40 hydrogenated castor oil in Eucerin DermoCapillaire. In a rinse-off product with an antifungal this
+matters much less than in a leave-on product, but red-free options exist (see `alternatives.json`, e.g.
+sebamed Anti-Schuppen **Plus**). Stiftung Warentest last tested anti-dandruff shampoos in
+[2017](https://www.test.de/Antischuppenshampoos-Neun-von-zwoelf-helfen-1567459-0/). Most tested products used
+piroctone olamine and worked; formulas have changed since then.
+
+Conditioners are the hardest category: nearly all of them rely on fatty alcohols and many add esters or oils.
+Practical options are to condition only the lengths, choose one whose only amber is cetearyl alcohol, or use pure MCT oil on the ends.
+
+## 5. What the treatment evidence says (for the Toolkit tab)
+- **Topical antifungals** (Cochrane, 51 RCTs, 9052 participants): ketoconazole 2% gives a 31% lower risk of failed
+  clearance than placebo at 4 weeks, works about as well as steroids with 44% fewer side effects, and
+  is comparable to ciclopirox (Okokon et al. 2015,
+  [doi:10.1002/14651858.CD008138.pub3](https://doi.org/10.1002/14651858.CD008138.pub3)).
+- **Topical anti-inflammatories** (Cochrane, 36 RCTs): short courses of steroids clear SD (mild steroids work as well as strong ones),
+  and calcineurin inhibitors are comparable. These are for flares and come from a doctor (Kastarinen et al. 2014,
+  [doi:10.1002/14651858.CD009446.pub2](https://doi.org/10.1002/14651858.CD009446.pub2)).
+- **Malassezia folliculitis** responds to topical, and in stubborn cases oral, antifungals. Prevention of recurrence
+  is part of the treatment (Vlachos et al. 2020, [doi:10.1111/jdv.16253](https://doi.org/10.1111/jdv.16253)).
+- Maintenance: ketoconazole 2% every 1–2 weeks after clearance is the standard pattern, from both the manufacturer
+  dosing and primary-care guidance.
+
+## 6. Community resources (kept separate from published evidence)
+These are anecdotal and unverified. They are useful for product names and practical tips; they are not proof.
+
+| Resource | What it's good for |
+|---|---|
+| r/SebDerm | Routines and "what worked" threads. The consistent tip: **contact time**. People rinse antifungal shampoo within about 30 s, when it needs 3–5+ minutes on the scalp. Many rotate actives (ketoconazole / piroctone / selenium / salicylic). Many report ketoconazole alone wasn't enough without changing products. |
+| r/FungalAcne (wiki) | Ingredient rules (fatty acids C11–C24, esters, polysorbates, oils, ferments), a crowd-maintained "FA-safe" product list. The wiki itself says it is not a diagnosis. |
+| r/Folliculitis | Overlap of scalp SD and Malassezia folliculitis on the hairline, chest and back; ketoconazole as a body wash. |
+| [Simple Skincare Science](https://simpleskincarescience.com/fungal-acne-products-malassezia-pityrosporum-folliculitis/) | The original fungal-acne ingredient list and 1500+ product list (mostly US/Asia). |
+| [Sezia](https://sezia.com/fungal-acne-safe-shampoo/), [Folliculitis Scout](https://folliculitisscout.com/) | Ingredient checkers and guides (partly commercial). |
+| [Skinsort: FA-safe German brands](https://skinsort.com/products/fungal-acne-safe-products-from-german-brands) | Filterable lists of Nivea, Balea, Eucerin and other German-brand products. |
+| CodeCheck (German app), INCIDecoder, Hautschutzengel | INCI lists for German products, useful for checking `alternatives.json` entries. |
+| haut.de | German cosmetics-industry (IKW) ingredient explainers. |
+| Open Beauty Facts | Open product database. The app's barcode lookup and Alternatives search use it. |
+
+The lists disagree on fatty alcohols, ceteareths, ferments and lecithin, so this tool marks them amber.
