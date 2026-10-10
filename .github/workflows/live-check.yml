@@ -1,0 +1,23 @@
+name: Live check
+
+# Runs the app against the real network (Open Beauty Facts, source links, deployed site).
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 6 * * 1'
+  push:
+    branches: [claude/**]
+    paths: ['test/live/**', 'app.js', 'alternatives.json', 'RESEARCH.md', '.github/workflows/live-check.yml']
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-save playwright@1.56.1 && npx playwright install --with-deps chromium
+      - run: python3 -m http.server 8765 &
+      - run: node test/live/e2e-mock.cjs
+      - run: node test/live/check.cjs http://localhost:8765/
