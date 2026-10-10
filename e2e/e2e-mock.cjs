@@ -1,6 +1,6 @@
 const { chromium } = require('playwright');
 // Mocked end-to-end check (works offline / in the sandbox): tabs, curated list, OBF search via page.route.
-// Usage: python3 -m http.server 8765 & node test/live/e2e-mock.cjs
+// Usage: python3 -m http.server 8765 & node e2e/e2e-mock.cjs
 const S = require('os').tmpdir();
 (async () => {
   const b = await chromium.launch();

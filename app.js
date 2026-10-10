@@ -149,6 +149,11 @@ function check() {
   }
 }
 
+// Open Beauty Facts names sometimes contain HTML entities (&quot;).
+function decode(s) {
+  return new DOMParser().parseFromString(s, 'text/html').documentElement.textContent;
+}
+
 // One result card; text is set via textContent so product data can't inject HTML.
 function card(level, title, sub, link) {
   const el = document.createElement('div');
@@ -178,9 +183,11 @@ $('alt-go').onclick = async () => {
     const r = await fetch('https://world.openbeautyfacts.org/cgi/search.pl?' + q);
     const all = (await r.json()).products || [];
     const good = Matcher.rank(all, rules, vocab);
-    st.textContent = `${all.length} products found, ${good.length} without red-flag ingredients.`;
+    st.textContent = `${all.length} products found, ${good.length} without red-flag ingredients.` +
+      (all.length && !good.length ? ' Tip: condition only the lengths, or use pure MCT oil on the ends (see Toolkit).' : '');
     for (const p of good.slice(0, 50)) {
-      const el = card(p.antifungal ? 'blue' : p.amber ? 'amber' : 'green', `${p.brands || ''} ${p.product_name || p.code}`.trim(),
+      const name = `${(p.brands || '').split(',')[0]} ${p.product_name || p.code}`.trim();
+      const el = card(p.antifungal ? 'blue' : p.amber ? 'amber' : 'green', decode(name),
         `${p.antifungal ? 'Contains an antifungal. ' : ''}${p.amber} debated ingredient${p.amber === 1 ? '' : 's'}. Tap for details.`,
         'https://world.openbeautyfacts.org/product/' + p.code);
       el.onclick = (e) => e.target.tagName !== 'A' && load(p.inci);

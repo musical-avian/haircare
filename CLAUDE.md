@@ -23,8 +23,9 @@ Scalp Scan is a static, offline-capable web app (PWA) that scans hair-care ingre
 | `sw.js`, `manifest.json`, `icon*` | Offline cache + install. |
 | `vendor/` | Pinned Tesseract.js 6.0.1 / core 6.0.0 / eng data. Never load from a CDN at runtime. |
 | `RESEARCH.md` | Evidence behind every rule; published sources separate from community sources. |
-| `test/` | `node --test` |
-| `.github/workflows/` | `test.yml` (PRs), `pages.yml` (deploy from `main`). |
+| `test/` | `node --test` (unit tests only; any .js/.cjs under test/ is run, so keep network scripts out) |
+| `e2e/` | Playwright: `e2e-mock.cjs` (offline, mocked OBF) and `check.cjs` (live network: OBF search, barcode, links, Pages) |
+| `.github/workflows/` | `test.yml` (PRs), `pages.yml` (deploy from `main`), `live-check.yml` (weekly + on demand; real network). |
 
 ## Rules
 - **Minimal code, no build step, no runtime dependencies** beyond `vendor/`. External services
@@ -42,5 +43,6 @@ Scalp Scan is a static, offline-capable web app (PWA) that scans hair-care ingre
 ## Commands
 - Tests: `node --test`
 - Local server: `python3 -m http.server 8000` → http://localhost:8000
+- Live check: the sandbox blocks OBF and shop sites, so run `live-check.yml` on GitHub Actions and read the job log/summary.
 - Browser check: Playwright with Chromium (`--use-fake-device-for-media-stream`); feed a label image via
   the `#file` input; mock Open Beauty Facts with `page.route` when it's blocked by the network.

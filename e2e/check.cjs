@@ -1,13 +1,13 @@
 // Live check: run the app against the real network (no mocks) and check every external link.
 // Meant for GitHub Actions (the dev sandbox blocks these hosts). Not part of `node --test`.
-// Usage: node test/live/check.cjs [appUrl]   (default http://localhost:8765/)
+// Usage: node e2e/check.cjs [appUrl]   (default http://localhost:8765/)
 const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 
 const APP = process.argv[2] || 'http://localhost:8765/';
 const PAGES = 'https://musical-avian.github.io/haircare/';
-const ROOT = path.join(__dirname, '..', '..');
+const ROOT = path.join(__dirname, '..');
 const UA = 'Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Mobile Safari/537.36';
 const out = [];
 let failed = false;
@@ -70,11 +70,18 @@ async function status(url) {
   // 4. External links
   const files = ['alternatives.json', 'RESEARCH.md', 'README.md', 'index.html'];
   const urls = new Set();
-  for (const f of files) for (const u of fs.readFileSync(path.join(ROOT, f), 'utf8').match(/https?:\/\/[^\s)"'<>\]]+/g) || []) urls.add(u.replace(/[.,;]+$/, ''));
+  for (const f of files) for (const u of fs.readFileSync(path.join(ROOT, f), 'utf8').match(/https?:\/\/[^\s)"'<>\]]+/g) || []) urls.add(u.replace(/[.,;*]+$/, ''));
   log('\n## Links\n\n| Status | URL |\n|---|---|');
   for (const u of [...urls].filter((u) => !u.includes('localhost')).sort()) {
-    const s = await status(u);
-    const ok = typeof s === 'number' && s < 400;
+    let s = await status(u);
+    let ok = typeof s === 'number' && s < 400;
+    if (!ok) {
+      // Many sites block non-browser clients; retry like a user would, in Chromium.
+      const r = await page.goto(u, { waitUntil: 'domcontentloaded', timeout: 30000 }).catch((e) => e);
+      const bs = r instanceof Error ? 'ERR ' + r.message.split('\n')[0] : r && r.status();
+      s = `${s} → browser ${bs}`;
+      ok = typeof bs === 'number' && bs < 400;
+    }
     log(`| ${ok ? '✅' : '⚠️'} ${s} | ${u} |`);
   }
 
