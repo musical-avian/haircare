@@ -1,0 +1,68 @@
+{
+  "notes": "Hand-checked products available in Germany. 'inci' is copied from the cited source; 'partial' means the source didn't give the full list. Formulas change: always check the pack. test/match.test.js enforces zero red hits unless 'medicine' is true (a short-contact antifungal medicine whose benefit outweighs a minor ester).",
+  "products": [
+    {
+      "name": "Terzolin® 2% Lösung (ketoconazole)",
+      "brand": "STADA",
+      "type": "shampoo",
+      "medicine": true,
+      "where": "Apotheke (no prescription), also dm online via pharmacy partner",
+      "inci": "Ketoconazole 2%, Aqua, Sodium Laureth Sulfate, Disodium Laureth Sulfosuccinate, PEG-120 Methyl Glucose Dioleate, Sodium Chloride, Sodium Hydroxide, Hydrochloric Acid, Benzyl Alcohol, Benzoic Acid, BHT, Erythrosine",
+      "partial": true,
+      "note": "First-line treatment. Leave on 3–5 min, 2×/week for 2–4 weeks, then every 1–2 weeks. Also usable as a body wash for Malassezia folliculitis.",
+      "source": "https://www.shop-apotheke.com/arzneimittel/14420349/terzolin-2-loesung-gegen-pilzbefall-und-schuppen.htm",
+      "checked": "2026-10"
+    },
+    {
+      "name": "sebamed Anti-Schuppen Shampoo Plus",
+      "brand": "sebamed",
+      "type": "shampoo",
+      "where": "dm, Rossmann, Apotheke",
+      "inci": "Aqua, Sodium Laureth Sulfate, Lauryl Glucoside, Sodium Lauroyl Sarcosinate, Sodium Chloride, Hydroxypropyl Oxidized Starch PG-Trimonium Chloride, Piroctone Olamine, Menthol, Parfum, Citric Acid, Phenoxyethanol, Sodium Benzoate, CI 42090, CI 47005",
+      "note": "Piroctone olamine, no esters or oils. The plain 'Anti-Schuppen' (non-Plus) version contains glycol distearate.",
+      "source": "https://www.medikamente-per-klick.de/sebamed-anti-schuppen-shampoo-plus-200ml-11158135",
+      "checked": "2026-10"
+    },
+    {
+      "name": "Vichy Dercos Anti-Schuppen Shampoo (normale bis fettige Kopfhaut)",
+      "brand": "Vichy",
+      "type": "shampoo",
+      "where": "Apotheke, dm, Rossmann",
+      "inci": "Aqua, Sodium Laureth Sulfate, Cocamidopropyl Betaine, Selenium Disulfide, Salicylic Acid, PPG-5-Ceteth-20, Carbomer, Glycerin, Dimethicone, Menthol, Sodium Benzoate, Citric Acid, Tocopheryl Acetate, 2-Oleamido-1,3-Octadecanediol, Parfum",
+      "partial": true,
+      "note": "Selenium disulfide + salicylic acid. Contains a ceramide and a ceteth (amber). Good rotation partner for ketoconazole.",
+      "source": "https://www.shop-apotheke.at/beauty/D19668568/vichy-dercos-anti-schuppen-shampoo-beruhigendes-shampoo-mit-salicylsaeure-fuer-normales-bis-fettiges-haar.htm",
+      "checked": "2026-10"
+    },
+    {
+      "name": "Pure MCT oil (C8/C10), e.g. Sunday Natural or Aurica Bio MCT-Öl",
+      "brand": "various",
+      "type": "leave-on",
+      "where": "Online, Reformhaus, some drugstores (food-grade is fine)",
+      "inci": "Caprylic/Capric Triglyceride",
+      "note": "Malassezia-safe oil for dry lengths, beard or skin. Check it says 100% C8/C10; some 'MCT' oils contain longer chains.",
+      "source": "https://www.sunday.de/mct-oel-bio-c8-c10.html",
+      "checked": "2026-10"
+    },
+    {
+      "name": "The Ordinary 100% Plant-Derived Squalane",
+      "brand": "The Ordinary",
+      "type": "leave-on",
+      "where": "lookfantastic.de, Douglas/online",
+      "inci": "Squalane",
+      "note": "Malassezia-safe emollient for barrier repair (face, hairline, ends).",
+      "source": "https://www.lookfantastic.de/p/the-ordinary-100-plant-derived-squalane-30ml/11416764",
+      "checked": "2026-10"
+    },
+    {
+      "name": "Pure petrolatum (Vaseline, any brand)",
+      "brand": "various",
+      "type": "leave-on",
+      "where": "dm, Rossmann, Apotheke",
+      "inci": "Petrolatum",
+      "note": "Occlusive barrier repair for very dry, cracked patches. Not on hairy/follicle-prone areas (can occlude follicles).",
+      "source": "https://simpleskincarescience.com/fungal-acne-products-malassezia-pityrosporum-folliculitis/",
+      "checked": "2026-10"
+    }
+  ]
+}

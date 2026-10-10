@@ -47,3 +47,30 @@ test('tea tree is helpful, not reported twice', () => {
   const r = scan('Water, Melaleuca Alternifolia (Tea Tree) Leaf Oil, Menthol', rules);
   assert.deepStrictEqual(r.map((h) => h.level), ['blue']);
 });
+
+test('EU note on zinc pyrithione', () => {
+  const [h] = scan('Zinc Pyrithione', rules);
+  assert.match(h.eu, /banned/i);
+});
+
+test('curated alternatives carry no red flags (medicines excepted)', () => {
+  const { products } = require('../alternatives.json');
+  for (const p of products) {
+    for (const k of ['name', 'type', 'where', 'inci', 'source', 'checked']) assert.ok(p[k], `${p.name}: missing ${k}`);
+    if (p.medicine) continue;
+    const red = scan(p.inci, rules).filter((h) => h.level === 'red');
+    assert.deepStrictEqual(red.map((h) => h.item), [], p.name);
+  }
+});
+
+test('rank keeps only red-free products, antifungals first', () => {
+  const { rank } = require('../match.js');
+  const r = rank([
+    { code: '1', product_name: 'Oily', ingredients_text: 'Aqua, Cocos Nucifera Oil' },
+    { code: '2', product_name: 'Plain', ingredients_text: 'Aqua, Sodium Laureth Sulfate, Cetearyl Alcohol' },
+    { code: '3', product_name: 'Antifungal', ingredients_text_de: 'Aqua, Piroctone Olamine' },
+    { code: '4', product_name: 'No INCI' },
+  ], rules);
+  assert.deepStrictEqual(r.map((p) => p.code), ['3', '2']);
+  assert.strictEqual(r[1].amber, 1);
+});
