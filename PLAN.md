@@ -16,7 +16,7 @@ Shared state for all sessions/agents. Protocol in `CLAUDE.md`. Append; don't rew
 | 2026-10-10 | Tesseract.js vendored in `vendor/` | Offline; survives CDN/project disappearing |
 | 2026-10-10 | Rules as ordered regex list in `ingredients.json`, first match wins | Editable without code; specific before generic |
 | 2026-10-10 | Levels red / amber / blue / green | Community lists disagree → amber for debated |
-| 2026-10-10 | Deploy via GitHub Actions to Pages from `main`, changes arrive by PR | User choice |
+| 2026-10-10 | Pages deploys from branch `main` (owner setting); changes arrive by PR | Owner enabled branch deploy; Actions deploy removed |
 | 2026-10-10 | Alternatives = live Open Beauty Facts search (DE) + short curated list | User choice; OBF coverage patchy |
 | 2026-10-10 | Toolkit is an offline tab inside the app | User choice |
 | 2026-10-10 | Zinc pyrithione flagged as EU-banned in cosmetics (since 2022-03-01) | Reg. (EU) 2021/1902 |
@@ -25,10 +25,10 @@ Shared state for all sessions/agents. Protocol in `CLAUDE.md`. Append; don't rew
 ### Todo
 - [ ] Verify partial INCI lists (Terzolin, Vichy Dercos) against the pack / Beipackzettel; drop `partial`
 - [ ] Find a red-free conditioner sold in Germany for `alternatives.json`
-- [ ] Commit the Playwright e2e script into `test/` (currently kept in a scratchpad)
-- [ ] Owner: set Pages Source = GitHub Actions, default branch = main, merge PR #1
+- [ ] Owner: set default branch = main (currently the claude/ branch)
 ### Doing
 ### Done
+- [x] (claude, 2026-10-10) Merged PR #1; live check (`e2e/check.cjs`, `live-check.yml`) runs the app against real OBF + links on GitHub Actions
 - [x] (claude, 2026-10-10) EU notes on rules (`eu` field) + EU/Germany section in RESEARCH.md
 - [x] (claude, 2026-10-10) Alternatives tab: OBF search via `Matcher.rank`, curated `alternatives.json` + tests
 - [x] (claude, 2026-10-10) Toolkit tab (clear → stop feeding → barrier → maintain → doctor)
@@ -48,6 +48,9 @@ Shared state for all sessions/agents. Protocol in `CLAUDE.md`. Append; don't rew
 - `market` Most EU anti-dandruff shampoos contain one red ingredient (glycol distearate, glyceryl oleate, PEG-40 HCO); sebamed Anti-Schuppen Plus has none
 - `community` r/SebDerm: contact time 3–5+ min is the #1 tip; rotating actives is common
 - `infra` openbeautyfacts.org, dm.de and INCI sites are blocked from the dev sandbox (org network policy) → mock OBF in tests; gather INCI via WebSearch
+- `infra` Live (Actions) run: OBF search + barcode work from the browser (CORS OK). DE: shampoos 100 found / 15 red-free, shower gels 97 / 19, conditioners 10 / 0
+- `infra` Publisher DOIs (Wiley, PNAS, ASM) and sezia, skinsort, sunday.de, folliculitisscout return 403 to Node fetch (bot protection); recheck in Chromium
+- `infra` Pages live at musical-avian.github.io/haircare (branch deploy from main). The 8 publisher DOIs return 403 even to Chromium (bot protection); all shop/source links return 200 in Chromium
 
 ## Open questions
 - Ciclopirox shampoo availability/status in Germany (ketoconazole answered: sold only in pharmacies, no prescription needed).
@@ -58,3 +61,5 @@ Shared state for all sessions/agents. Protocol in `CLAUDE.md`. Append; don't rew
 - 2026-10-10 claude: v2 planned (Pages, EU, alternatives, toolkit, community, blackboard).
 - 2026-10-10 claude: Pages workflow, CLAUDE.md, PLAN.md committed; created `main` from the v1 commit; opened PR #1.
 - 2026-10-10 claude: v2: EU notes, Alternatives tab, Toolkit tab, community + treatment evidence in RESEARCH.md; 8 tests + browser check pass.
+- 2026-10-10 claude: merged PR #1. Pages deploy failed: Pages not enabled (owner setting). Live check added; fixed entity decoding, duplicated brands, empty-conditioner tip; moved e2e scripts out of test/.
+- 2026-10-10 claude: 2nd live run: links OK in browser, Pages 200. Fixed scanner/alternatives load coupling, check races; removed pages.yml (conflicts with branch deploy).
