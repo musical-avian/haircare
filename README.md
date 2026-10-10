@@ -27,8 +27,10 @@ Why each ingredient is flagged: see [RESEARCH.md](RESEARCH.md).
 ## Host it
 Camera access needs HTTPS (or `localhost`).
 
-- **GitHub Pages:** repo *Settings → Pages → Deploy from branch*, root folder. Open the URL on your phone,
-  then Chrome menu → *Add to Home screen / Install app*.
+- **GitHub Pages (automatic):** `.github/workflows/pages.yml` tests and deploys every push to `main`.
+  One-time setup: *Settings → Pages → Source: **GitHub Actions***, and make `main` the default branch.
+  Site: **https://musical-avian.github.io/haircare/** — open it on your phone, then Chrome menu →
+  *Add to Home screen / Install app*.
 - **Anywhere static:** copy the folder to any web server (Netlify, Cloudflare Pages, nginx, a NAS…).
 - **Local test:** `python3 -m http.server 8000` then open http://localhost:8000.
 
