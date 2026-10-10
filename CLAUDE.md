@@ -25,7 +25,8 @@ Scalp Scan is a static, offline-capable web app (PWA) that scans hair-care ingre
 | `RESEARCH.md` | Evidence behind every rule; published sources separate from community sources. |
 | `test/` | `node --test` (unit tests only; any .js/.cjs under test/ is run, so keep network scripts out) |
 | `e2e/` | Playwright: `e2e-mock.cjs` (offline, mocked OBF) and `check.cjs` (live network: OBF search, barcode, links, Pages) |
-| `.github/workflows/` | `test.yml` (PRs), `pages.yml` (deploy from `main`), `live-check.yml` (weekly + on demand; real network). |
+| Deploy | GitHub Pages from branch `main` (no workflow); merge = release. |
+| `.github/workflows/` | `test.yml` (every push/PR), `live-check.yml` (weekly + on demand; real network). |
 
 ## Rules
 - **Minimal code, no build step, no runtime dependencies** beyond `vendor/`. External services

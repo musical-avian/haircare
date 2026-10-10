@@ -71,13 +71,15 @@ async function status(url) {
   const files = ['alternatives.json', 'RESEARCH.md', 'README.md', 'index.html'];
   const urls = new Set();
   for (const f of files) for (const u of fs.readFileSync(path.join(ROOT, f), 'utf8').match(/https?:\/\/[^\s)"'<>\]]+/g) || []) urls.add(u.replace(/[.,;*]+$/, ''));
+  // Separate tab for third-party sites so their script errors aren't counted as app errors.
+  const linkPage = await browser.newPage({ userAgent: UA });
   log('\n## Links\n\n| Status | URL |\n|---|---|');
   for (const u of [...urls].filter((u) => !u.includes('localhost')).sort()) {
     let s = await status(u);
     let ok = typeof s === 'number' && s < 400;
     if (!ok) {
       // Many sites block non-browser clients; retry like a user would, in Chromium.
-      const r = await page.goto(u, { waitUntil: 'domcontentloaded', timeout: 30000 }).catch((e) => e);
+      const r = await linkPage.goto(u, { waitUntil: 'domcontentloaded', timeout: 30000 }).catch((e) => e);
       const bs = r instanceof Error ? 'ERR ' + r.message.split('\n')[0] : r && r.status();
       s = `${s} → browser ${bs}`;
       ok = typeof bs === 'number' && bs < 400;
@@ -90,8 +92,11 @@ async function status(url) {
   log(`\n## Deployed site ${PAGES}: ${ps}`);
   if (ps === 200) {
     await page.goto(PAGES);
+    await page.waitForSelector('#alt-curated .hit', { state: 'attached', timeout: 30000 }); // rules + curated loaded
     await page.fill('#text', 'Aqua, Polysorbate 80, Squalane');
-    log(`Pages scan verdict: "${await page.textContent('#verdict')}"`);
+    const v = await page.textContent('#verdict');
+    log(`Pages scan verdict: "${v}"`);
+    if (!/Avoid/.test(v)) fail('deployed site did not flag Polysorbate 80');
   }
 
   if (errors.length) fail('page errors: ' + errors.join(' | '));

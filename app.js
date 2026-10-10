@@ -4,10 +4,13 @@ const video = $('video'), canvas = $('canvas'), text = $('text'), status = $('st
 const abs = (p) => new URL(p, location.href).href;
 let rules = [], vocab, worker;
 
-Promise.all([fetch('ingredients.json'), fetch('alternatives.json')].map((p) => p.then((r) => r.json()))).then(([d, alts]) => {
+const rulesReady = fetch('ingredients.json').then((r) => r.json()).then((d) => {
   rules = d.rules;
   vocab = Matcher.makeVocab(rules);
   if (text.value.trim()) check();
+});
+// Separate fetch so a missing/broken alternatives.json can't stop the scanner.
+Promise.all([rulesReady, fetch('alternatives.json').then((r) => r.json())]).then(([, alts]) => {
   for (const p of alts.products) {
     const hits = Matcher.scan(p.inci, rules, vocab);
     const worst = hits[0] ? hits[0].level : 'green';
